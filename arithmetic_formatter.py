@@ -1,40 +1,71 @@
-def arithmetic_arranger(problems, show_results=False):
-    if len(problems) > 5:
-        return "Error: Too many problems."
+def arithmetic_arranger(problems, solver=False):
+  # Final Variables
 
-    arranged_problems = ""
-    for problem in problems:
-        operands = problem.split()
-        num1, operator, num2 = operands[0], operands[1], operands[2]
+  top_number = ""
+  bottom_number = ""
+  lines = ""
+  solution_number = ""
+  resolutions = ""
 
-        if operator not in ['+', '-']:
-            return "Error: Operator must be '+' or '-'."
+  # First Check after the FOR loop
 
-        if not (num1.isdigit() and num2.isdigit()):
-            return "Error: Numbers must only contain digits."
+  if len(problems) > 5:
+    return "Error: Too many problems."
 
-        if len(num1) > 4 or len(num2) > 4:
-            return "Error: Numbers cannot be more than four digits."
+  # Core FOR Loop
 
-        width = max(len(num1), len(num2)) + 2
-        line1 = num1.rjust(width)
-        line2 = operator + num2.rjust(width - 1)
-        dashes = "-" * width
+  for problem in problems:
+    first_number = ""
+    operator = ""
+    second_number = ""
+    first_number = problem.split()[0]
+    operator = problem.split()[1]
+    second_number = problem.split()[2]
 
-        arranged_problems += f"{line1}    {' ' * 4} {line2}    {' ' * 4} {dashes}\n"
+    # Checks for the items before the split
 
-    if show_results:
-        results = []
-        for problem in problems:
-            operands = problem.split()
-            num1, operator, num2 = int(operands[0]), operands[1], int(operands[2])
-            result = str(num1 + num2) if operator == '+' else str(num1 - num2)
-            results.append(result.rjust(width))
+    if first_number.isdigit() and second_number.isdigit():
+      if len(first_number) > 4 or len(second_number) > 4:
+        return "Error: Numbers cannot be more than four digits."
+    else:
+      return "Error: Numbers must only contain digits."
 
-        arranged_problems += f"{' ' * 4}    {' ' * 4} {' '.join(results)}"
+    solution = ""
 
-    return arranged_problems.strip()
+    if operator == "+":
+      solution = str(int(first_number) + int(second_number))
+    elif operator == "-":
+      solution = str(int(first_number) - int(second_number))
+    else:
+      return "Error: Operator must be '+' or '-'."
+
+  # Distance comprobation
+
+    distance = max(len(first_number), len(second_number)) + 2
+
+    # Items Padding
+
+    if problem != problems[-1]:
+      top_number = top_number + str(first_number.rjust(distance)) + "    "
+      bottom_number = bottom_number + operator + str(
+          second_number.rjust(distance - 1)) + "    "
+      lines = lines + "-" * (distance) + "    "
+      solution_number = solution_number + solution.rjust(distance) + "    "
+    else:
+      top_number = top_number + str(first_number.rjust(distance))
+      bottom_number = bottom_number + operator + str(
+          second_number.rjust(distance - 1))
+      lines = lines + "-" * (distance)
+      solution_number = solution_number + solution.rjust(distance)
+
+  # Solver comprobation
+
+  if solver:
+    resolutions = top_number + "\n" + bottom_number + "\n" + lines + "\n" + solution_number
+  else:
+    resolutions = top_number + "\n" + bottom_number + "\n" + lines
+  return resolutions
 
 
 
-print(arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"], True))
+print(arithmetic_arranger(["32 + 698", "3801 - 2", "4556 + 43"], True))
